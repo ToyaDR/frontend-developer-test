@@ -1,6 +1,7 @@
-import React, { useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
     Button,
+    CircularProgress,
     Table,
     TableBody,
     TableCell,
@@ -12,11 +13,22 @@ import {
 
 export function DiffTable({ type, fetchData }) {
     const [data, setData] = useState(null);
-    const fetchDataAndSet = () => fetchData()
-        .then(({ data }) => setData(data))
-        .catch(error => error);
+    const [loading, setLoading] = useState(false);
 
-    useEffect(() => { fetchDataAndSet(); });
+    const fetchDataCallback = useCallback(() => {
+        const fetchDataAndHandleLoading = async () => {
+            setLoading(true);
+            return await fetchData();
+        };
+
+        fetchDataAndHandleLoading()
+            .then(({data}) => setData(data))
+            .catch(error => console.error(error))
+            .finally(() => setLoading(false))
+    }, []);
+
+    useEffect(() => fetchDataCallback(), [fetchDataCallback]);
+
     return (
         <TableContainer>
             <Table>
@@ -81,9 +93,16 @@ export function DiffTable({ type, fetchData }) {
                     }
                 </TableBody>
             </Table>
-            <Button onClick={fetchDataAndSet}>
-                Load More
-            </Button>
+            {
+                loading
+                    ? (
+                        <CircularProgress />
+                    ) : (
+                        <Button onClick={fetchDataCallback}>
+                            Load More
+                        </Button>
+                    )
+            }
         </TableContainer>
 
     )
