@@ -12,7 +12,7 @@ import {
 } from "@material-ui/core";
 
 export function DiffTable({ type, fetchData }) {
-    const [data, setData] = useState(null);
+    const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
 
     const fetchDataCallback = useCallback(() => {
@@ -22,7 +22,7 @@ export function DiffTable({ type, fetchData }) {
         };
 
         fetchDataAndHandleLoading()
-            .then(({data}) => setData(data))
+            .then(({data}) => setData(existingData => existingData.concat(data)))
             .catch(error => console.error(error))
             .finally(() => setLoading(false))
     }, []);
