@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import api from '../lib/api';
 import { Box, Container } from "@material-ui/core";
 import {DiffTable} from "./DiffTable";
