@@ -14,18 +14,20 @@ import {
 export function DiffTable({ type, fetchData }) {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
 
     const fetchDataCallback = useCallback(() => {
         const fetchDataAndHandleLoading = async () => {
+            setError(null);
             setLoading(true);
             return await fetchData();
         };
 
         fetchDataAndHandleLoading()
-            .then(({data}) => setData(existingData => existingData.concat(data)))
-            .catch(error => console.error(error))
-            .finally(() => setLoading(false))
-    }, []);
+            .then(({ data }) => setData(existingData => existingData.concat(data)))
+            .catch(error => setError(error))
+            .finally(() => setLoading(false));
+    }, [fetchData]);
 
     useEffect(() => fetchDataCallback(), [fetchDataCallback]);
 
@@ -91,6 +93,18 @@ export function DiffTable({ type, fetchData }) {
                             </TableRow>
                         )) : []
                     }
+                    {
+                        error
+                        ? (
+                            <TableRow>
+                                <TableCell>
+                                    <Typography>
+                                        We had problems fetching your data. Please try again.
+                                    </Typography>
+                                </TableCell>
+                            </TableRow>
+                            ) : null
+                    }
                 </TableBody>
             </Table>
             {
@@ -99,7 +113,7 @@ export function DiffTable({ type, fetchData }) {
                         <CircularProgress />
                     ) : (
                         <Button onClick={fetchDataCallback}>
-                            Load More
+                            {error ? 'Retry' : 'Load More'}
                         </Button>
                     )
             }
