@@ -20,6 +20,7 @@ describe('<DiffTableContainer />', () => {
 
 
   describe('render()', () => {
+    mockFetchData.mockReturnValue({ data: []});
     it('calls fetchData', () => {
       expect(mockFetchData).toHaveBeenCalled();
     });
