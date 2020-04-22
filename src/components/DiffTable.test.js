@@ -50,5 +50,34 @@ describe('<DiffTable />', () => {
         .text())
         .toContain("Date")
     })
+
+
+    it('sorts rows in reverse chronological order by default', () => {
+      const tableRows = wrapper
+        .find(TableBody)
+        .find(TableRow);
+
+      const isSortedReverse = !!tableRows
+        .map(tableRow => new Date(tableRow.find({ "data-testid": "date" }).text()).getTime())
+        .every((curr, index, arr) => !index || arr[index-1] >= curr);
+
+      expect(isSortedReverse).toEqual(true);
+    })
+
+    it('sorts rows in chronological order on click', () => {
+      const tableRows = wrapper
+        .find(TableBody)
+        .find(TableRow);
+
+      wrapper
+        .find(TableSortLabel)
+        .simulate('click');
+
+      const isSorted = !!tableRows
+        .map(tableRow => parseFloat(tableRow.find({ "data-testid": "date"}).text()))
+        .every((curr, index, arr) => !index || arr[index-1] <= curr);
+
+      expect(isSorted).toEqual(true);
+    })
   });
 });

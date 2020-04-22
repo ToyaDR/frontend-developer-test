@@ -72,17 +72,17 @@ export function DiffTable({ values, variant }) {
           {
             state.data.map(({ id, timestamp, diff }) => (
               <TableRow key={id}>
-                <TableCell>
+                <TableCell data-testid="date">
                   <Typography variant="subtitle2">
                     {formatTimestamp(timestamp)}
                   </Typography>
                 </TableCell>
-                <TableCell>
+                <TableCell data-testid="id">
                   <Typography variant="subtitle2">
                     {id}
                   </Typography>
                 </TableCell>
-                <TableCell>
+                <TableCell data-testid="oldValue">
                   {diff
                     ? diff.map(({field, oldValue}) => (
                       <Typography key={`${id}-${field}-old`} variant="subtitle2">
@@ -91,7 +91,7 @@ export function DiffTable({ values, variant }) {
                     )) : null
                   }
                 </TableCell>
-                <TableCell>
+                <TableCell data-testid="newValue">
                   {diff
                     ? diff.map(({field, newValue}) => (
                       <Typography key={`${id}-${field}-new`} variant="subtitle2">
