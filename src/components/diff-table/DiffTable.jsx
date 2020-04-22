@@ -8,6 +8,7 @@ import {
     TableContainer,
     TableHead,
     TableRow,
+    TableSortLabel,
     Typography,
 } from "@material-ui/core";
 import { LoadingButton } from "../LoadingButton";
@@ -51,10 +52,22 @@ export function DiffTable({ type, fetchData }) {
             <Table>
                 <TableHead>
                     <TableRow>
-                        <TableCell onClick={() => dispatch({ type: 'toggleSortAscending' })}>
-                            <Typography className={classes.tableHeaderFont}>
-                                Date
-                            </Typography>
+                        <TableCell>
+                            <TableSortLabel
+                                active={state.sortState === 'date'}
+                                direction={state.sortAscending ? 'asc' : 'desc'}
+                                onClick={() => {
+                                    if (state.sortState === 'date') {
+                                        dispatch({ type: 'toggleSortAscending' });
+                                    } else {
+                                        dispatch({ type: 'setSortState', sortState: 'date'})
+                                    }
+                                }}
+                            >
+                                <Typography className={classes.tableHeaderFont}>
+                                    Date
+                                </Typography>
+                            </TableSortLabel>
                         </TableCell>
                         <TableCell>
                             <Typography className={classes.tableHeaderFont}>
