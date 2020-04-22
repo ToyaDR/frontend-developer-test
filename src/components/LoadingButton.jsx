@@ -4,7 +4,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles({
     grid: {
-        padding: '16px',
+        padding: '8px',
     },
     button: {
         backgroundColor: '#03a9f4',
