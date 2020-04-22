@@ -1,7 +1,7 @@
 import React, {useCallback} from 'react';
 import api from '../lib/api';
 import { Box, Container, Grid } from '@material-ui/core';
-import { DiffTableContainer } from './diff-table/DiffTableContainer';
+import { DiffTableContainer } from './DiffTableContainer';
 import { makeStyles } from '@material-ui/core/styles';
 
 const fetchUserData = async () => await api.getUsersDiff();

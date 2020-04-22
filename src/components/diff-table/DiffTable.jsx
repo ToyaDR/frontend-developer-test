@@ -1,4 +1,4 @@
-import React, {useEffect, useReducer, useState} from "react";
+import React, { useEffect, useReducer } from 'react';
 import {
   Table,
   TableBody,
@@ -8,11 +8,12 @@ import {
   TableRow,
   TableSortLabel,
   Typography
-} from "@material-ui/core";
+} from '@material-ui/core';
 import { initialState, reducer } from './reducer';
 
-import {formatTimestamp} from "../../util/util";
-import {makeStyles} from "@material-ui/core/styles";
+import {formatTimestamp} from '../../util/util';
+import {makeStyles} from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
 
 const useStyles = makeStyles({
   tableHeaderFont: {
@@ -104,5 +105,22 @@ export function DiffTable({ values, type }) {
         </TableBody>
       </Table>
     </TableContainer>
-  )
+  );
 }
+
+DiffTable.propTypes = {
+  type: PropTypes.string.isRequired,
+  values: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    timestamp: PropTypes.string.isRequired,
+    diff: PropTypes.arrayOf(PropTypes.shape({
+      field: PropTypes.string.isRequired,
+      oldValue: PropTypes.string.isRequired,
+      newValue: PropTypes.string.isRequired,
+    })),
+  })),
+};
+
+DiffTable.defaultProps = {
+  values: [],
+};

@@ -30,9 +30,9 @@ export function LoadingButton({ loading, error, errorMessage, circularProgressPr
       <Grid item>
         { loading
           ? <CircularProgress
-              {...circularProgressProps}
-              className={classes.circularProgress}
-              data-testid='circular-progress'
+            {...circularProgressProps}
+            className={classes.circularProgress}
+            data-testid='circular-progress'
           />
           : null }
       </Grid>

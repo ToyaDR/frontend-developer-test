@@ -56,5 +56,5 @@ describe('<LoadingButton loading={true} />', () => {
 
       expect(clickFn).toHaveBeenCalled();
     });
-  })
+  });
 });

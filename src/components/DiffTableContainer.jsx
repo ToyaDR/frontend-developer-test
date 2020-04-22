@@ -1,8 +1,8 @@
-import React, { useCallback, useEffect, useReducer, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Paper } from '@material-ui/core';
-import { LoadingButton } from '../LoadingButton';
-import { DiffTable } from "./DiffTable";
+import { LoadingButton } from './LoadingButton';
+import { DiffTable } from './diff-table/DiffTable';
 
 export function DiffTableContainer({ type, fetchData }) {
   const [loading, setLoading] = useState(false);
