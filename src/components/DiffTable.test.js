@@ -1,6 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { DiffTable } from './diff-table/DiffTable';
+import {TableBody, TableRow, TableSortLabel, Typography} from "@material-ui/core";
 
 describe('<DiffTable />', () => {
   const usersDiff = [
@@ -33,9 +34,21 @@ describe('<DiffTable />', () => {
   })
 
   describe('render()', () => {
-    it('renders 2 sorted rows', () => {
+    it('renders 2 rows', () => {
       mockUseEffect();
-      expect(wrapper.find({ 'data-testid': 'diff-table-body-row' })).toHaveLength(2);
+      expect(wrapper
+        .find(TableBody)
+        .find(TableRow))
+        .toHaveLength(2);
     });
+
+    it('only has one sortable column (Date)', () => {
+      const tableSortLabel = wrapper.find(TableSortLabel);
+      expect(tableSortLabel).toHaveLength(1);
+      expect(tableSortLabel
+        .find(Typography)
+        .text())
+        .toContain("Date")
+    })
   });
 });

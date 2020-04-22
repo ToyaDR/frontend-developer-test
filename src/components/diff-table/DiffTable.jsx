@@ -71,7 +71,7 @@ export function DiffTable({ values, variant }) {
         <TableBody>
           {
             state.data.map(({ id, timestamp, diff }) => (
-              <TableRow key={id} data-testid="diff-table-body-row">
+              <TableRow key={id}>
                 <TableCell>
                   <Typography variant="subtitle2">
                     {formatTimestamp(timestamp)}

@@ -41,9 +41,9 @@ export function reducer(state, action) {
   }
 }
 
-export function initialState() {
+export function initialState(data) {
   return {
-    data: [],
+    data: sortByState('date', false, data),
     sortAscending: false,
     sortState: 'date',
   };

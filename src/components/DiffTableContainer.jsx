@@ -6,19 +6,22 @@ import { DiffTable } from './diff-table/DiffTable';
 
 export function DiffTableContainer({ variant, fetchData }) {
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState(false);
   const [data, setData] = useState([]);
 
   const fetchDataCallback = useCallback(() => {
     const fetchDataAndHandleLoading = async () => {
-      setError(null);
+      setError(false);
       setLoading(true);
       return await fetchData();
     };
 
     fetchDataAndHandleLoading()
       .then(({ data: newData }) => setData(existingData => existingData.concat(newData)))
-      .catch(error => setError(error))
+      .catch(error => {
+        console.error(error);
+        setError(true);
+      })
       .finally(() => setLoading(false));
   }, [fetchData]);
 
