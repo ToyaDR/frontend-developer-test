@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer } from 'react';
+import React, { useReducer }  from 'react';
 import {
   Table,
   TableBody,
@@ -25,9 +25,10 @@ const useStyles = makeStyles({
 export function DiffTable({ values, variant }) {
   const classes = useStyles();
 
-  const [state, dispatch] = useReducer(reducer, null, initialState);
+  const [state, dispatch] = useReducer(reducer, values, initialState);
 
-  useEffect(() => dispatch({ type: 'updateData', data: values }), [values]); // called once on mount
+  // using React.useEffect rather than importing useEffect directly here for testing purposes
+  React.useEffect(() => dispatch({ type: 'updateData', data: values }), [values]);
   return (
     <TableContainer>
       <Table>
@@ -112,7 +113,7 @@ DiffTable.propTypes = {
   variant: PropTypes.string.isRequired,
   values: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.string.isRequired,
-    timestamp: PropTypes.string.isRequired,
+    timestamp: PropTypes.number.isRequired,
     diff: PropTypes.arrayOf(PropTypes.shape({
       field: PropTypes.string.isRequired,
       oldValue: PropTypes.string.isRequired,
