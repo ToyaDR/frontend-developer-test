@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useReducer, useState} from 'react';
 import {
     Button,
     CircularProgress,
@@ -10,11 +10,49 @@ import {
     TableRow,
     Typography,
 } from "@material-ui/core";
+import {formatTimestamp } from "../util/util";
+
+const sortByDate = (sortAscending) => ({ timestamp: date1 }, { timestamp: date2 }) => {
+    if (sortAscending) {
+        if (date1 < date2) { return -1; }
+        else if (date1 === date2) { return 0; }
+        else { return 1; }
+    } else {
+        if (date2 < date1) { return -1; }
+        else if (date1 === date2) { return 0; }
+        else { return 1; }
+    }
+};
+
+function reducer(state, action) {
+    switch (action.type) {
+        case 'updateData':
+            const updatedData = state.data.concat(action.data);
+            updatedData.sort(sortByDate(state.sortAscending));
+            return {
+                data: updatedData,
+            };
+        case 'toggleSortAscending':
+            return {
+                sortAscending: !state.sortAscending,
+                data: state.data.sort(sortByDate(!state.sortAscending)),
+            };
+        default:
+            throw new Error();
+    }
+}
+function initialState() {
+    return {
+        data: [],
+        sortAscending: false,
+    };
+}
 
 export function DiffTable({ type, fetchData }) {
-    const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+
+    const [state, dispatch] = useReducer(reducer, null, initialState);
 
     const fetchDataCallback = useCallback(() => {
         const fetchDataAndHandleLoading = async () => {
@@ -24,7 +62,7 @@ export function DiffTable({ type, fetchData }) {
         };
 
         fetchDataAndHandleLoading()
-            .then(({ data }) => setData(existingData => existingData.concat(data)))
+            .then(({ data }) => dispatch({ type: 'updateData', data }))
             .catch(error => setError(error))
             .finally(() => setLoading(false));
     }, [fetchData]);
@@ -36,7 +74,7 @@ export function DiffTable({ type, fetchData }) {
             <Table>
                 <TableHead>
                     <TableRow>
-                        <TableCell>
+                        <TableCell onClick={() => dispatch({ type: 'toggleSortAscending' })}>
                             <Typography>
                                 Date
                             </Typography>
@@ -59,39 +97,38 @@ export function DiffTable({ type, fetchData }) {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    { data
-                        ? data.map(({ id, timestamp, diff }) => (
+                    {
+                        state.data.map(({ id, timestamp, diff }) => (
                             <TableRow key={id}>
-                                <TableCell>
-                                    <Typography>
-                                        {timestamp}
-                                    </Typography>
-                                </TableCell>
-                                <TableCell>
-                                    <Typography>
-                                        {id}
-                                    </Typography>
-                                </TableCell>
-                                <TableCell>
-                                    {diff
-                                        ? diff.map(({ field, oldValue }) => (
-                                            <Typography key={`${id}-${field}-old`}>
-                                                {oldValue}
-                                            </Typography>
-                                        )) : null
-                                    }
-                                </TableCell>
-                                <TableCell>
-                                    {diff
-                                        ? diff.map(({ field, newValue }) => (
-                                            <Typography key={`${id}-${field}-new`}>
-                                                {newValue}
-                                            </Typography>
-                                        )) : null
-                                    }
-                                </TableCell>
-                            </TableRow>
-                        )) : []
+                                    <TableCell>
+                                        <Typography>
+                                            {formatTimestamp(timestamp)}
+                                        </Typography>
+                                    </TableCell>
+                                    <TableCell>
+                                        <Typography>
+                                            {id}
+                                        </Typography>
+                                    </TableCell>
+                                    <TableCell>
+                                        {diff
+                                            ? diff.map(({field, oldValue}) => (
+                                                <Typography key={`${id}-${field}-old`}>
+                                                    {oldValue}
+                                                </Typography>
+                                            )) : null
+                                        }
+                                    </TableCell>
+                                    <TableCell>
+                                        {diff
+                                            ? diff.map(({field, newValue}) => (
+                                                <Typography key={`${id}-${field}-new`}>
+                                                    {newValue}
+                                                </Typography>
+                                            )) : null
+                                        }
+                                    </TableCell>
+                                </TableRow>))
                     }
                     {
                         error
@@ -118,6 +155,5 @@ export function DiffTable({ type, fetchData }) {
                     )
             }
         </TableContainer>
-
     )
 }
