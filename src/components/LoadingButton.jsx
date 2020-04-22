@@ -1,5 +1,6 @@
 import React from 'react';
-import {Button, CircularProgress, Grid, PropTypes, Typography} from '@material-ui/core';
+import PropTypes from 'prop-types';
+import { Button, CircularProgress, Grid, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles({

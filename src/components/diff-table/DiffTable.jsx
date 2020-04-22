@@ -1,7 +1,8 @@
 import React, { useCallback, useEffect, useReducer, useState } from 'react';
+import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import {
-  Paper, PropTypes,
+  Paper,
   Table,
   TableBody,
   TableCell,
