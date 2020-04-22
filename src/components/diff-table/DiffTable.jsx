@@ -49,40 +49,40 @@ export function DiffTable({ type, fetchData }) {
     return (
         <Paper>
             <TableContainer>
-            <Table>
-                <TableHead>
-                    <TableRow>
-                        <TableCell>
-                            <TableSortLabel
-                                active={state.sortState === 'date'}
-                                direction={state.sortAscending ? 'asc' : 'desc'}
-                                onClick={() => {
-                                    if (state.sortState === 'date') {
-                                        dispatch({ type: 'toggleSortAscending' });
-                                    } else {
-                                        dispatch({ type: 'setSortState', sortState: 'date'})
-                                    }
-                                }}
-                            >
-                                <Typography className={classes.tableHeaderFont}>
-                                    Date
-                                </Typography>
+                <Table>
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>
+                                <TableSortLabel
+                                    active={state.sortState === 'date'}
+                                    direction={state.sortAscending ? 'asc' : 'desc'}
+                                    onClick={() => {
+                                        if (state.sortState === 'date') {
+                                            dispatch({ type: 'toggleSortAscending' });
+                                        } else {
+                                            dispatch({ type: 'setSortState', sortState: 'date'})
+                                        }
+                                    }}
+                                >
+                                    <Typography className={classes.tableHeaderFont}>
+                                        Date
+                                    </Typography>
                             </TableSortLabel>
-                        </TableCell>
-                        <TableCell>
-                            <Typography className={classes.tableHeaderFont}>
-                                {type === 'user' ? 'User ID' : 'Project ID'}
-                            </Typography>
-                        </TableCell>
-                        <TableCell>
-                            <Typography className={classes.tableHeaderFont}>
-                                Old value
-                            </Typography>
-                        </TableCell>
-                        <TableCell>
-                            <Typography className={classes.tableHeaderFont}>
-                                New value
-                            </Typography>
+                            </TableCell>
+                            <TableCell>
+                                <Typography className={classes.tableHeaderFont}>
+                                    {type === 'user' ? 'User ID' : 'Project ID'}
+                                </Typography>
+                            </TableCell>
+                            <TableCell>
+                                <Typography className={classes.tableHeaderFont}>
+                                    Old value
+                                </Typography>
+                            </TableCell>
+                            <TableCell>
+                                <Typography className={classes.tableHeaderFont}>
+                                    New value
+                                </Typography>
                         </TableCell>
                     </TableRow>
                 </TableHead>
@@ -123,7 +123,7 @@ export function DiffTable({ type, fetchData }) {
                     }
                 </TableBody>
             </Table>
-        </TableContainer>
+            </TableContainer>
             <LoadingButton
                 loading={loading}
                 error={error}
