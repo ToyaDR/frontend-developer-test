@@ -4,7 +4,7 @@ import { Paper } from '@material-ui/core';
 import { LoadingButton } from './LoadingButton';
 import { DiffTable } from './diff-table/DiffTable';
 
-export function DiffTableContainer({ type, fetchData }) {
+export function DiffTableContainer({ variant, fetchData }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [data, setData] = useState([]);
@@ -26,7 +26,7 @@ export function DiffTableContainer({ type, fetchData }) {
 
   return (
     <Paper>
-      <DiffTable values={data} type={type} />
+      <DiffTable values={data} variant={variant} />
       <LoadingButton
         loading={loading}
         error={error}
@@ -41,6 +41,6 @@ export function DiffTableContainer({ type, fetchData }) {
 }
 
 DiffTableContainer.propTypes = {
-  type: PropTypes.string.isRequired,
+  variant: PropTypes.string.isRequired,
   fetchData: PropTypes.func.isRequired,
 };

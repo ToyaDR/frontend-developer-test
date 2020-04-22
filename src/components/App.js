@@ -20,10 +20,10 @@ export const App = () => {
       <Box data-testid="app-box" m={2}>
         <Grid container direction="column" spacing={8}>
           <Grid item>
-            <DiffTableContainer type='user' fetchData={useCallback(fetchUserData, [])}/>
+            <DiffTableContainer variant="user" fetchData={useCallback(fetchUserData, [])}/>
           </Grid>
           <Grid item>
-            <DiffTableContainer type='project' fetchData={useCallback(fetchProjectData, [])}/>
+            <DiffTableContainer variant="project" fetchData={useCallback(fetchProjectData, [])}/>
           </Grid>
         </Grid>
       </Box>

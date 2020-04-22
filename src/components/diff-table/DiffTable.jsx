@@ -11,8 +11,8 @@ import {
 } from '@material-ui/core';
 import { initialState, reducer } from './reducer';
 
-import {formatTimestamp} from '../../util/util';
-import {makeStyles} from '@material-ui/core/styles';
+import { formatTimestamp } from '../../util/util';
+import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 
 const useStyles = makeStyles({
@@ -22,7 +22,7 @@ const useStyles = makeStyles({
   },
 });
 
-export function DiffTable({ values, type }) {
+export function DiffTable({ values, variant }) {
   const classes = useStyles();
 
   const [state, dispatch] = useReducer(reducer, null, initialState);
@@ -52,7 +52,7 @@ export function DiffTable({ values, type }) {
             </TableCell>
             <TableCell>
               <Typography className={classes.tableHeaderFont}>
-                {type === 'user' ? 'User ID' : 'Project ID'}
+                {variant === 'user' ? 'User ID' : 'Project ID'}
               </Typography>
             </TableCell>
             <TableCell>
@@ -109,7 +109,7 @@ export function DiffTable({ values, type }) {
 }
 
 DiffTable.propTypes = {
-  type: PropTypes.string.isRequired,
+  variant: PropTypes.string.isRequired,
   values: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.string.isRequired,
     timestamp: PropTypes.string.isRequired,
