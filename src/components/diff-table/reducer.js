@@ -22,7 +22,7 @@ export function reducer(state, action) {
   case 'updateData':
     return {
       ...state,
-      data: sortByState(state.sortState, state.sortAscending, state.data.concat(action.data))
+      data: sortByState(state.sortState, state.sortAscending, action.data)
     };
   case 'toggleSortAscending':
     return {

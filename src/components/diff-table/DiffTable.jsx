@@ -1,8 +1,5 @@
-import React, { useCallback, useEffect, useReducer, useState } from 'react';
-import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
+import React, {useEffect, useReducer, useState} from "react";
 import {
-  Paper,
   Table,
   TableBody,
   TableCell,
@@ -10,12 +7,12 @@ import {
   TableHead,
   TableRow,
   TableSortLabel,
-  Typography,
-} from '@material-ui/core';
-import { LoadingButton } from '../LoadingButton';
-
-import { formatTimestamp } from '../../util/util';
+  Typography
+} from "@material-ui/core";
 import { initialState, reducer } from './reducer';
+
+import {formatTimestamp} from "../../util/util";
+import {makeStyles} from "@material-ui/core/styles";
 
 const useStyles = makeStyles({
   tableHeaderFont: {
@@ -24,121 +21,88 @@ const useStyles = makeStyles({
   },
 });
 
-export function DiffTable({ type, fetchData }) {
+export function DiffTable({ values, type }) {
   const classes = useStyles();
-
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
 
   const [state, dispatch] = useReducer(reducer, null, initialState);
 
-  const fetchDataCallback = useCallback(() => {
-    const fetchDataAndHandleLoading = async () => {
-      setError(null);
-      setLoading(true);
-      return await fetchData();
-    };
-
-    fetchDataAndHandleLoading()
-      .then(({ data }) => dispatch({ type: 'updateData', data }))
-      .catch(error => setError(error))
-      .finally(() => setLoading(false));
-  }, [fetchData]);
-
-  useEffect(() => fetchDataCallback(), [fetchDataCallback]);
-
+  useEffect(() => dispatch({ type: 'updateData', data: values }), [values]); // called once on mount
   return (
-    <Paper>
-      <TableContainer>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>
-                <TableSortLabel
-                  active={state.sortState === 'date'}
-                  direction={state.sortAscending ? 'asc' : 'desc'}
-                  onClick={() => {
-                    if (state.sortState === 'date') {
-                      dispatch({ type: 'toggleSortAscending' });
-                    } else {
-                      dispatch({ type: 'setSortState', sortState: 'date'});
-                    }
-                  }}
-                >
-                  <Typography className={classes.tableHeaderFont}>
-                                        Date
+    <TableContainer>
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableCell>
+              <TableSortLabel
+                active={state.sortState === 'date'}
+                direction={state.sortAscending ? 'asc' : 'desc'}
+                onClick={() => {
+                  if (state.sortState === 'date') {
+                    dispatch({ type: 'toggleSortAscending' });
+                  } else {
+                    dispatch({ type: 'setSortState', sortState: 'date'});
+                  }
+                }}
+              >
+                <Typography className={classes.tableHeaderFont}>
+                  Date
+                </Typography>
+              </TableSortLabel>
+            </TableCell>
+            <TableCell>
+              <Typography className={classes.tableHeaderFont}>
+                {type === 'user' ? 'User ID' : 'Project ID'}
+              </Typography>
+            </TableCell>
+            <TableCell>
+              <Typography className={classes.tableHeaderFont}>
+                Old value
+              </Typography>
+            </TableCell>
+            <TableCell>
+              <Typography className={classes.tableHeaderFont}>
+                New value
+              </Typography>
+            </TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {
+            state.data.map(({ id, timestamp, diff }) => (
+              <TableRow key={id} data-testid="diff-table-body-row">
+                <TableCell>
+                  <Typography variant="subtitle2">
+                    {formatTimestamp(timestamp)}
                   </Typography>
-                </TableSortLabel>
-              </TableCell>
-              <TableCell>
-                <Typography className={classes.tableHeaderFont}>
-                  {type === 'user' ? 'User ID' : 'Project ID'}
-                </Typography>
-              </TableCell>
-              <TableCell>
-                <Typography className={classes.tableHeaderFont}>
-                                    Old value
-                </Typography>
-              </TableCell>
-              <TableCell>
-                <Typography className={classes.tableHeaderFont}>
-                                    New value
-                </Typography>
-              </TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {
-              state.data.map(({ id, timestamp, diff }) => (
-                <TableRow key={id}>
-                  <TableCell>
-                    <Typography variant="subtitle2">
-                      {formatTimestamp(timestamp)}
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography variant="subtitle2">
-                      {id}
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
-                    {diff
-                      ? diff.map(({field, oldValue}) => (
-                        <Typography key={`${id}-${field}-old`} variant="subtitle2">
-                          {oldValue}
-                        </Typography>
-                      )) : null
-                    }
-                  </TableCell>
-                  <TableCell>
-                    {diff
-                      ? diff.map(({field, newValue}) => (
-                        <Typography key={`${id}-${field}-new`} variant="subtitle2">
-                          {newValue}
-                        </Typography>
-                      )) : null
-                    }
-                  </TableCell>
-                </TableRow>)
-              )
-            }
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <LoadingButton
-        loading={loading}
-        error={error}
-        errorMessage="We had problems fetching your data. Please try again."
-        buttonProps={{
-          onClick: fetchDataCallback,
-          variant: 'contained',
-        }}
-      />
-    </Paper>
-  );
+                </TableCell>
+                <TableCell>
+                  <Typography variant="subtitle2">
+                    {id}
+                  </Typography>
+                </TableCell>
+                <TableCell>
+                  {diff
+                    ? diff.map(({field, oldValue}) => (
+                      <Typography key={`${id}-${field}-old`} variant="subtitle2">
+                        {oldValue}
+                      </Typography>
+                    )) : null
+                  }
+                </TableCell>
+                <TableCell>
+                  {diff
+                    ? diff.map(({field, newValue}) => (
+                      <Typography key={`${id}-${field}-new`} variant="subtitle2">
+                        {newValue}
+                      </Typography>
+                    )) : null
+                  }
+                </TableCell>
+              </TableRow>)
+            )
+          }
+        </TableBody>
+      </Table>
+    </TableContainer>
+  )
 }
-
-DiffTable.propTypes = {
-  type: PropTypes.string.isRequired,
-  fetchData: PropTypes.func.isRequired,
-};
