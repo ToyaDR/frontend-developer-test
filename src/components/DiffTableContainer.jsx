@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Paper } from '@material-ui/core';
 import { LoadingButton } from './LoadingButton';
@@ -22,7 +22,8 @@ export function DiffTableContainer({ variant, fetchData }) {
       .finally(() => setLoading(false));
   }, [fetchData]);
 
-  useEffect(() => fetchDataCallback(), [fetchDataCallback]);
+  // using React.useEffect rather than importing useEffect directly here for testing purposes
+  React.useEffect(() => fetchDataCallback(), [fetchDataCallback]);
 
   return (
     <Paper>
