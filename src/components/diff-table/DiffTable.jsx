@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useReducer, useState } from 'react';
-import makeStyles from "@material-ui/core/styles/makeStyles";
+import { makeStyles } from "@material-ui/core/styles";
 import {
-    Grid,
     Paper,
     Table,
     TableBody,
@@ -11,7 +10,6 @@ import {
     TableRow,
     Typography,
 } from "@material-ui/core";
-import { TableRowError } from "../TableRowError";
 import { LoadingButton } from "../LoadingButton";
 
 import { formatTimestamp } from "../../util/util";
@@ -48,7 +46,7 @@ export function DiffTable({ type, fetchData }) {
 
     return (
         <Paper>
-            <TableContainer classes={classes.container}>
+            <TableContainer className={classes.container}>
             <Table>
                 <TableHead>
                     <TableRow>
@@ -106,26 +104,21 @@ export function DiffTable({ type, fetchData }) {
                                             )) : null
                                         }
                                     </TableCell>
-                                </TableRow>))
+                                </TableRow>)
+                        )
                     }
-                    <TableRowError error={error} message="We had problems fetching your data. Please try again" />
                 </TableBody>
             </Table>
         </TableContainer>
-            <Grid container justify="center">
-                <Grid item>
-                    <LoadingButton
-                        loading={loading}
-                        error={error}
-                        buttonProps={{
-                            onClick: fetchDataCallback,
-                            variant: "contained",
-                            color: "primary"
-
-                        }}
-                    />
-                </Grid>
-            </Grid>
+            <LoadingButton
+                loading={loading}
+                error={error}
+                errorMessage="We had problems fetching your data. Please try again."
+                buttonProps={{
+                    onClick: fetchDataCallback,
+                    variant: "contained",
+                }}
+            />
         </Paper>
     )
 }
