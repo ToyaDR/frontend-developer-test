@@ -28,7 +28,7 @@ const resolveOrRejectCollection = (timesCalled, collection) => () => {
         offset: hasItems ? sliceStart : totalItems,
         total: totalItems,
       });
-    }, DEFAULT_DELAY)
+    }, DEFAULT_DELAY);
   });
 };
 
