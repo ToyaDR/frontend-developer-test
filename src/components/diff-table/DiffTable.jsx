@@ -1,7 +1,5 @@
-import React, {useCallback, useEffect, useReducer, useState} from 'react';
+import React, { useCallback, useEffect, useReducer, useState } from 'react';
 import {
-    Button,
-    CircularProgress,
     Table,
     TableBody,
     TableCell,
@@ -10,43 +8,11 @@ import {
     TableRow,
     Typography,
 } from "@material-ui/core";
-import {formatTimestamp } from "../util/util";
+import { TableRowError } from "../TableRowError";
+import { LoadingButton } from "../LoadingButton";
 
-const sortByDate = (sortAscending) => ({ timestamp: date1 }, { timestamp: date2 }) => {
-    if (sortAscending) {
-        if (date1 < date2) { return -1; }
-        else if (date1 === date2) { return 0; }
-        else { return 1; }
-    } else {
-        if (date2 < date1) { return -1; }
-        else if (date1 === date2) { return 0; }
-        else { return 1; }
-    }
-};
-
-function reducer(state, action) {
-    switch (action.type) {
-        case 'updateData':
-            const updatedData = state.data.concat(action.data);
-            updatedData.sort(sortByDate(state.sortAscending));
-            return {
-                data: updatedData,
-            };
-        case 'toggleSortAscending':
-            return {
-                sortAscending: !state.sortAscending,
-                data: state.data.sort(sortByDate(!state.sortAscending)),
-            };
-        default:
-            throw new Error();
-    }
-}
-function initialState() {
-    return {
-        data: [],
-        sortAscending: false,
-    };
-}
+import { formatTimestamp } from "../../util/util";
+import { initialState, reducer } from "./reducer";
 
 export function DiffTable({ type, fetchData }) {
     const [loading, setLoading] = useState(false);
@@ -130,30 +96,18 @@ export function DiffTable({ type, fetchData }) {
                                     </TableCell>
                                 </TableRow>))
                     }
-                    {
-                        error
-                        ? (
-                            <TableRow>
-                                <TableCell>
-                                    <Typography>
-                                        We had problems fetching your data. Please try again.
-                                    </Typography>
-                                </TableCell>
-                            </TableRow>
-                            ) : null
-                    }
+                    <TableRowError error={error} message="We had problems fetching your data. Please try again" />
                 </TableBody>
             </Table>
-            {
-                loading
-                    ? (
-                        <CircularProgress />
-                    ) : (
-                        <Button onClick={fetchDataCallback}>
-                            {error ? 'Retry' : 'Load More'}
-                        </Button>
-                    )
-            }
+            <LoadingButton
+                loading={loading}
+                error={error}
+                buttonProps={{
+                    onClick: fetchDataCallback,
+                    variant: "contained",
+                    color: "primary"
+                }}
+            />
         </TableContainer>
     )
 }
