@@ -29,13 +29,17 @@ export function LoadingButton({ loading, error, errorMessage, circularProgressPr
     >
       <Grid item>
         { loading
-          ? <CircularProgress {...circularProgressProps} className={classes.circularProgress} />
+          ? <CircularProgress
+              {...circularProgressProps}
+              className={classes.circularProgress}
+              data-testid='circular-progress'
+          />
           : null }
       </Grid>
       <Grid item>
         { (!loading && error)
           ? (
-            <Typography variant="subtitle2" color="error">
+            <Typography variant="subtitle2" color="error" data-testid='error-message'>
               {errorMessage}
             </Typography>
           ) : null }
@@ -43,7 +47,7 @@ export function LoadingButton({ loading, error, errorMessage, circularProgressPr
       <Grid item>
         { !loading
           ? (
-            <Button {...buttonProps} className={classes.button} >
+            <Button {...buttonProps} className={classes.button} data-testid='loading-button'>
               <Typography variant="subtitle2">
                 {error ? 'Retry' : 'Load more'}
               </Typography>
