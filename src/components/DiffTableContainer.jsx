@@ -26,8 +26,9 @@ export function DiffTableContainer({ variant, fetchData }) {
 
   return (
     <Paper>
-      <DiffTable values={data} variant={variant} />
+      <DiffTable data-testid="diff-table" values={data} variant={variant} />
       <LoadingButton
+        data-testid="loading-button"
         loading={loading}
         error={error}
         errorMessage="We had problems fetching your data. Please try again."
