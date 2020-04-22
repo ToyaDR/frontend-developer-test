@@ -1,5 +1,8 @@
 import React, { useCallback, useEffect, useReducer, useState } from 'react';
+import makeStyles from "@material-ui/core/styles/makeStyles";
 import {
+    Grid,
+    Paper,
     Table,
     TableBody,
     TableCell,
@@ -14,7 +17,15 @@ import { LoadingButton } from "../LoadingButton";
 import { formatTimestamp } from "../../util/util";
 import { initialState, reducer } from "./reducer";
 
+const useStyles = makeStyles({
+    container: {
+        maxHeight: 440,
+    }
+});
+
 export function DiffTable({ type, fetchData }) {
+    const classes = useStyles();
+
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
@@ -36,27 +47,28 @@ export function DiffTable({ type, fetchData }) {
     useEffect(() => fetchDataCallback(), [fetchDataCallback]);
 
     return (
-        <TableContainer>
+        <Paper>
+            <TableContainer classes={classes.container}>
             <Table>
                 <TableHead>
                     <TableRow>
                         <TableCell onClick={() => dispatch({ type: 'toggleSortAscending' })}>
-                            <Typography>
+                            <Typography variant="subtitle2">
                                 Date
                             </Typography>
                         </TableCell>
                         <TableCell>
-                            <Typography>
+                            <Typography variant="subtitle2">
                                 {type === 'user' ? 'User ID' : 'Project ID'}
                             </Typography>
                         </TableCell>
                         <TableCell>
-                            <Typography>
+                            <Typography variant="subtitle2">
                                 Old value
                             </Typography>
                         </TableCell>
                         <TableCell>
-                            <Typography>
+                            <Typography variant="subtitle2">
                                 New value
                             </Typography>
                         </TableCell>
@@ -67,19 +79,19 @@ export function DiffTable({ type, fetchData }) {
                         state.data.map(({ id, timestamp, diff }) => (
                             <TableRow key={id}>
                                     <TableCell>
-                                        <Typography>
+                                        <Typography variant="subtitle2">
                                             {formatTimestamp(timestamp)}
                                         </Typography>
                                     </TableCell>
                                     <TableCell>
-                                        <Typography>
+                                        <Typography variant="subtitle2">
                                             {id}
                                         </Typography>
                                     </TableCell>
                                     <TableCell>
                                         {diff
                                             ? diff.map(({field, oldValue}) => (
-                                                <Typography key={`${id}-${field}-old`}>
+                                                <Typography key={`${id}-${field}-old`} variant="subtitle2">
                                                     {oldValue}
                                                 </Typography>
                                             )) : null
@@ -88,7 +100,7 @@ export function DiffTable({ type, fetchData }) {
                                     <TableCell>
                                         {diff
                                             ? diff.map(({field, newValue}) => (
-                                                <Typography key={`${id}-${field}-new`}>
+                                                <Typography key={`${id}-${field}-new`} variant="subtitle2">
                                                     {newValue}
                                                 </Typography>
                                             )) : null
@@ -99,15 +111,21 @@ export function DiffTable({ type, fetchData }) {
                     <TableRowError error={error} message="We had problems fetching your data. Please try again" />
                 </TableBody>
             </Table>
-            <LoadingButton
-                loading={loading}
-                error={error}
-                buttonProps={{
-                    onClick: fetchDataCallback,
-                    variant: "contained",
-                    color: "primary"
-                }}
-            />
         </TableContainer>
+            <Grid container justify="center">
+                <Grid item>
+                    <LoadingButton
+                        loading={loading}
+                        error={error}
+                        buttonProps={{
+                            onClick: fetchDataCallback,
+                            variant: "contained",
+                            color: "primary"
+
+                        }}
+                    />
+                </Grid>
+            </Grid>
+        </Paper>
     )
 }
