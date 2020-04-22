@@ -16,9 +16,10 @@ import { formatTimestamp } from "../../util/util";
 import { initialState, reducer } from "./reducer";
 
 const useStyles = makeStyles({
-    container: {
-        maxHeight: 440,
-    }
+    tableHeaderFont: {
+        fontSize: '0.875rem',
+        fontWeight: '600',
+    },
 });
 
 export function DiffTable({ type, fetchData }) {
@@ -46,27 +47,27 @@ export function DiffTable({ type, fetchData }) {
 
     return (
         <Paper>
-            <TableContainer className={classes.container}>
+            <TableContainer>
             <Table>
                 <TableHead>
                     <TableRow>
                         <TableCell onClick={() => dispatch({ type: 'toggleSortAscending' })}>
-                            <Typography variant="subtitle2">
+                            <Typography className={classes.tableHeaderFont}>
                                 Date
                             </Typography>
                         </TableCell>
                         <TableCell>
-                            <Typography variant="subtitle2">
+                            <Typography className={classes.tableHeaderFont}>
                                 {type === 'user' ? 'User ID' : 'Project ID'}
                             </Typography>
                         </TableCell>
                         <TableCell>
-                            <Typography variant="subtitle2">
+                            <Typography className={classes.tableHeaderFont}>
                                 Old value
                             </Typography>
                         </TableCell>
                         <TableCell>
-                            <Typography variant="subtitle2">
+                            <Typography className={classes.tableHeaderFont}>
                                 New value
                             </Typography>
                         </TableCell>

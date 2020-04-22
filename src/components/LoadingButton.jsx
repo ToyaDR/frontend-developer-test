@@ -11,6 +11,9 @@ const useStyles = makeStyles({
         color: '#ffffff',
         textTransform: 'initial',
     },
+    circularProgress: {
+        color: '#03a9f4',
+    },
 });
 
 export function LoadingButton({ loading, error, errorMessage, circularProgressProps, buttonProps }) {
@@ -24,7 +27,9 @@ export function LoadingButton({ loading, error, errorMessage, circularProgressPr
             className={classes.grid}
         >
             <Grid item>
-                { loading ? <CircularProgress {...circularProgressProps} /> : null }
+                { loading
+                    ? <CircularProgress {...circularProgressProps} className={classes.circularProgress} />
+                    : null }
             </Grid>
             <Grid item>
                 { (!loading && error)
